@@ -20,7 +20,7 @@ export default defineConfig({
         strictPort: true,
         cors: true,
         hmr: {
-            host: '10.113.73.30', // ← Ganti dengan IP lokal komputermu
+            host: '127.0.0.1', // ← Ganti dengan IP lokal komputermu
         },
     },
     esbuild: {
