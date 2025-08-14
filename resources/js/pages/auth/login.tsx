@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Masuk menggunakan username kamu" description="Masukkan username SSO kamu untuk akses fitur-fitur disini">
+        <AuthLayout title="Masuk menggunakan username kamu" description="Masukkan username kamu untuk akses fitur-fitur disini">
             <Head title="Log in" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>

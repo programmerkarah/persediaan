@@ -31,22 +31,26 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'username' => 'required|lowercase|max:255|unique:'.User::class,
+            'username' => 'required|lowercase|max:255|unique:' . User::class,
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|regex:/^[A-Za-z0-9._%+-]+@gmail\.com$/i|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|gmail:/^[A-Za-z0-9._%+-]+@gmail\.com$/i|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'requested_role' => ['required', 'in:User,Operator,Verifikator'],
         ]);
 
         $user = User::create([
+            'username' => $request->username,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'requested_role' => $request['requested_role'], // disimpan sebagai permintaan
+            'role' => 'Guest', // aktif default = Guest
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return redirect()->route('login')->with('status', 'Registrasi berhasil. Cek email verifikasi kamu.');
     }
 }

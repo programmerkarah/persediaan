@@ -14,6 +14,15 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        cors: true,
+        hmr: {
+            host: '10.113.73.30', // ← Ganti dengan IP lokal komputermu
+        },
+    },
     esbuild: {
         jsx: 'automatic',
     },

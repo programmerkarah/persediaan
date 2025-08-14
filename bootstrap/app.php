@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+            'role.approved' => \App\Http\Middleware\EnsureRoleApproved::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
