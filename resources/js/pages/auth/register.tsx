@@ -11,6 +11,7 @@ import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
     name: string;
+    username: string;
     email: string;
     password: string;
     password_confirmation: string;
@@ -19,6 +20,7 @@ type RegisterForm = {
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
+        username: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -32,12 +34,12 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <AuthLayout title="Buat akunmu!" description="Gak ada orang yang gak punya akun. Buat akun lo sekarang!">
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">Nama Lengkap</Label>
                         <Input
                             id="name"
                             type="text"
@@ -49,6 +51,23 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Full name"
+                        />
+                        <InputError message={errors.name} className="mt-2" />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="username">Username</Label>
+                        <Input
+                            id="username"
+                            type="text"
+                            required
+                            autoFocus
+                            tabIndex={1}
+                            autoComplete="username"
+                            value={data.username}
+                            onChange={(e) => setData('username', e.target.value)}
+                            disabled={processing}
+                            placeholder="Username"
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
@@ -108,9 +127,9 @@ export default function Register() {
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
+                    Eh ternyata udah punya akun?!{' '}
                     <TextLink href={route('login')} tabIndex={6}>
-                        Log in
+                        Masuk aja gih!
                     </TextLink>
                 </div>
             </form>
