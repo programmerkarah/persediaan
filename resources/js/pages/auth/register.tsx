@@ -1,16 +1,13 @@
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-
-type RoleType = 'User' | 'Operator' | 'Verifikator' | '';
 
 type RegisterForm = {
     name: string;
@@ -18,7 +15,6 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
-    requested_role: RoleType;
 };
 
 export default function Register() {
@@ -28,10 +24,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
-        requested_role: '', // <— tambahkan
     });
-
-    const [role, setRole] = useState<RoleType>('');
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -100,32 +93,6 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label>Pilih Role</Label>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="w-full justify-between">
-                                    {role || 'Pilih role'}
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-full">
-                                <DropdownMenuRadioGroup
-                                    value={role}
-                                    onValueChange={(value: string) => {
-                                        const selectedRole = value as RoleType;
-                                        setRole(selectedRole);
-                                        setData('requested_role', selectedRole);
-                                    }}
-                                >
-                                    <DropdownMenuRadioItem value="User">User</DropdownMenuRadioItem>
-                                    <DropdownMenuRadioItem value="Operator">Operator</DropdownMenuRadioItem>
-                                    <DropdownMenuRadioItem value="Verifikator">Verifikator</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        <InputError message={errors.requested_role} />
                     </div>
 
                     <div className="grid gap-2">

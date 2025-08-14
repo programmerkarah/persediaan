@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="300" height="200" fill="none" stroke="black" stroke-width="4">
+  <!-- Clipboard -->
+  <rect x="20" y="30" width="80" height="120" rx="10" ry="10"/>
+  <rect x="40" y="30" width="40" height="15" rx="3" ry="3"/>
+  
+  <!-- Checklist -->
+  <polyline points="30,60 35,65 45,55"/>
+  <line x1="50" y1="55" x2="85" y2="55"/>
+  <polyline points="30,80 35,85 45,75"/>
+  <line x1="50" y1="75" x2="85" y2="75"/>
+  <polyline points="30,100 35,105 45,95"/>
+  <line x1="50" y1="95" x2="85" y2="95"/>
+  
+  <!-- Boxes -->
+  <rect x="130" y="110" width="70" height="50"/>
+  <line x1="130" y1="120" x2="200" y2="120"/>
+  
+  <rect x="145" y="60" width="60" height="40"/>
+  <line x1="145" y1="70" x2="205" y2="70"/>
+  
+  <rect x="160" y="20" width="50" height="30"/>
+  <line x1="160" y1="30" x2="210" y2="30"/>
+  
+  <!-- Arrow on bottom box -->
+  <line x1="180" y1="145" x2="180" y2="130"/>
+  <polyline points="175,135 180,130 185,135"/>
+</svg>

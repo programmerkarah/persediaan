@@ -35,7 +35,6 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|gmail:/^[A-Za-z0-9._%+-]+@gmail\.com$/i|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'requested_role' => ['required', 'in:User,Operator,Verifikator'],
         ]);
 
         $user = User::create([
@@ -43,8 +42,6 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'requested_role' => $request['requested_role'], // disimpan sebagai permintaan
-            'role' => 'Guest', // aktif default = Guest
         ]);
 
         event(new Registered($user));

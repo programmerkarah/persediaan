@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\AdminUserController;
-use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\Admin\UserRoleController;
+use App\Http\Controllers\Admin\UserVerificationController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -19,16 +19,12 @@ Route::middleware(['auth', 'verified', 'role.approved'])->group(function () {
 });
 
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
-    Route::get('/api/admin/users', [AdminUserController::class, 'apiIndex']);
-    Route::post('/api/admin/users/{user}/approve', [AdminUserController::class, 'approve']);
-    Route::post('/api/admin/users/{user}/reject', [AdminUserController::class, 'reject']);
+    Route::patch('/admin/users/{user}/role', [UserRoleController::class, 'update'])->name('admin.users.role.update');
 });
 
-Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
-    Route::get('/admin/users', function () {
-        return Inertia::render('roleMgmt/userVerification');
-    });
-});
+Route::get('/admin/users', [UserVerificationController::class, 'index'])->name('admin.users.index');
+
+
 
 
 require __DIR__ . '/settings.php';
