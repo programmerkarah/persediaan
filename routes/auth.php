@@ -38,12 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
+    Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
+        ->middleware(['auth', 'signed'])
         ->name('verification.verify');
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
+    Route::post('/email/verification-notification', [\App\Http\Controllers\Auth\EmailVerificationNotificationController::class, 'store'])
+        ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])

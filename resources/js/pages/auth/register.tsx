@@ -69,7 +69,7 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Username"
                         />
-                        <InputError message={errors.name} className="mt-2" />
+                        <InputError message={errors.username} className="mt-2" />
                     </div>
 
                     <div className="grid gap-2">
@@ -81,7 +81,14 @@ export default function Register() {
                             tabIndex={2}
                             autoComplete="email"
                             value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
+                            onChange={(e) => {
+                                setData('email', e.target.value);
+                                if (!/^[A-Za-z0-9._%+-]+@gmail\.com$/i.test(e.target.value)) {
+                                    errors.email = 'Hanya menerima email @gmail.com';
+                                } else {
+                                    errors.email = '';
+                                }
+                            }}
                             disabled={processing}
                             placeholder="email@example.com"
                         />

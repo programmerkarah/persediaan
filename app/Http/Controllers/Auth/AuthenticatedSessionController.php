@@ -33,8 +33,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Kalau email belum terverifikasi, redirect ke halaman verifikasi
+        if (! $request->user() || ! $request->user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
+
 
     /**
      * Destroy an authenticated session.
