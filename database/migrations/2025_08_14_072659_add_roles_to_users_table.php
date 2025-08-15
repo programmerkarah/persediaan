@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('requested_role')->nullable(); // pilihan saat daftar
-            $table->string('role')->default('Guest'); // default role aktif
+            // $table->string('requested_role')->nullable(); // pilihan saat daftar
+            // $table->string('role')->default('Guest'); // default role aktif
         });
     }
 
