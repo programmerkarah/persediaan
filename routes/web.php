@@ -22,6 +22,8 @@ Route::middleware(['auth', 'verified', 'role.approved'])->group(function () {
 });
 
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
+    Route::post('/admin/users', [UserVerificationController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users', [UserVerificationController::class, 'index'])->name('admin.users.index');
     Route::patch('/admin/users/{user}/role', [UserRoleController::class, 'update'])->name('admin.users.role.update');
     Route::get('/admin/users', [UserVerificationController::class, 'index'])->name('admin.users.index');
     Route::post('/admin/users/search', [UserVerificationController::class, 'index'])->name('admin.users.index');

@@ -25,6 +25,7 @@ const mainNavItems: NavItem[] = [
         title: 'Admin',
         href : '/admin/users',
         icon: ShieldUser,
+
     },
 ];
 

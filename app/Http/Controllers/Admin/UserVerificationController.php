@@ -24,7 +24,11 @@ class UserVerificationController extends Controller
             $query->whereHas('roles', fn($q) => $q->where('name', $request->role));
         }
 
+<<<<<<< HEAD
         return Inertia::render('admin/UserList', [
+=======
+        return Inertia::render('admin/userList', [
+>>>>>>> 484ed83805a18a9c79f12a717410d741d7d2f238
             'users' => $query->paginate(10)->withQueryString(),
             'roles' => Role::all(),
             'filters' => $request->only(['search', 'role']),

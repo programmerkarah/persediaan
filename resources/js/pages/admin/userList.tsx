@@ -1,3 +1,4 @@
+
 import UserRoleManager from '@/components/admin/UserRoleManager';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -69,6 +70,7 @@ export default function UserList({ users, roles, filters }) {
                   <span className="text-sm">{role.name}</span>
                 </label>
               ))}
+
             </div>
           </PopoverContent>
         </Popover>
