@@ -1,95 +1,105 @@
-// resources/js/pages/userMgmt/userVerification.tsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { type BreadcrumbItem } from '@/types';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Role, User } from '@/types';
+import { useForm, usePage } from '@inertiajs/react';
+import { ChevronDownIcon } from 'lucide-react';
+import { useState } from 'react';
+import { route } from 'ziggy-js';
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    requested_role: string;
-    role: string;
+type UserRoleManagerProps = {
+    users: User[];
+    roles: Role[];
+};
+
+export default function UserRoleManager({ users, roles }: UserRoleManagerProps) {
+    return (
+        <div className="grid gap-6">
+            {users.map((user) => (
+                <UserCard key={user.id} user={user} roles={roles} />
+            ))}
+        </div>
+    );
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Manajemen Role',
-        href: '/admin/users',
-    },
-];
+type UserCardProps = {
+    user: User[];
+    roles: Role[];
+};
 
-export default function UserVerification() {
-    const [users, setUsers] = useState<User[]>([]);
+function UserCard({ user, roles }: UserCardProps) {
+    const [isSaved, setIsSaved] = useState(false);
 
-    useEffect(() => {
-        axios
-            .get('/api/admin/users')
-            .then((res) => setUsers(res.data))
-            .catch((err) => console.error(err));
-    }, []);
+    const { data, setData, patch, processing, errors } = useForm<{ role_ids: number[] }>({
+        role_ids: user.roles.map((r) => r.id),
+    });
 
-    const handleApprove = (id: number) => {
-        axios.post(`/api/admin/users/${id}/approve`).then(() => {
-            setUsers((prev) => prev.filter((u) => u.id !== id));
-        });
-    };
-
-    const handleReject = (id: number) => {
-        axios.post(`/api/admin/users/${id}/reject`).then(() => {
-            setUsers((prev) => prev.filter((u) => u.id !== id));
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        patch(route('admin.users.role.update', user.id), {
+            preserveScroll: true,
+            onSuccess: () => setIsSaved(true),
         });
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Verifikasi Role" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min p-4 bg-white dark:bg-neutral-900">
-                    <h2 className="text-xl font-semibold mb-4">Verifikasi Permintaan Role</h2>
-                    {users.length > 0 ? (
-                        <table className="w-full table-auto border">
-                            <thead className="bg-gray-100 dark:bg-neutral-800">
-                                <tr>
-                                    <th className="px-4 py-2 text-left">Nama</th>
-                                    <th className="px-4 py-2 text-left">Email</th>
-                                    <th className="px-4 py-2 text-left">Requested Role</th>
-                                    <th className="px-4 py-2 text-left">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.map((user) => (
-                                    <tr key={user.id} className="border-t dark:border-neutral-700">
-                                        <td className="px-4 py-2">{user.name}</td>
-                                        <td className="px-4 py-2">{user.email}</td>
-                                        <td className="px-4 py-2">{user.requested_role}</td>
-                                        <td className="space-x-2 px-4 py-2">
-                                            <button
-                                                className="rounded bg-green-500 px-3 py-1 text-white hover:bg-green-600"
-                                                onClick={() => handleApprove(user.id)}
-                                            >
-                                                Setujui
-                                            </button>
-                                            <button
-                                                className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                                                onClick={() => handleReject(user.id)}
-                                            >
-                                                Tolak
-                                            </button>
-                                        </td>
-                                    </tr>
+        <Card className="w-full md:max-w-3xl">
+            <CardHeader>
+                <CardTitle>
+                    {user.name} <span className="text-muted-foreground text-sm">({user.email})</span>
+                </CardTitle>
+
+                {user.roles.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        {user.roles.map((role) => (
+                            <span key={role.id} className="bg-muted text-muted-foreground rounded px-2 py-1 text-xs">
+                                {role.name}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </CardHeader>
+
+            <CardContent>
+                <form onSubmit={submit} className="flex flex-col gap-4 md:flex-row md:items-center">
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" className="w-full justify-between text-left whitespace-normal md:w-[300px]">
+                                {data.role_ids.length > 0
+                                    ? roles
+                                          .filter((r) => data.role_ids.includes(r.id))
+                                          .map((r) => r.name)
+                                          .join(', ')
+                                    : 'Pilih role'}
+                                <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[300px]">
+                            <div className="flex flex-col gap-2">
+                                {roles.map((role) => (
+                                    <label key={role.id} className="flex items-center gap-2">
+                                        <Checkbox
+                                            checked={data.role_ids.includes(role.id)}
+                                            onCheckedChange={(checked: boolean) => {
+                                                const updated = checked ? [...data.role_ids, role.id] : data.role_ids.filter((id) => id !== role.id);
+                                                setData('role_ids', updated);
+                                            }}
+                                        />
+                                        <span className="text-sm">{role.name}</span>
+                                    </label>
                                 ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <div className="text-center py-10 text-gray-500 dark:text-gray-400">
-                            Tidak ada permintaan role saat ini.
-                        </div>
-                    )}
-                </div>
-            </div>
-        </AppLayout>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+
+                    <Button type="submit" disabled={processing}>
+                        {processing ? 'Updating...' : 'Update Role'}
+                    </Button>
+                </form>
+                <InputError message={errors.role_ids} className="mt-2" />
+            </CardContent>
+        </Card>
     );
 }

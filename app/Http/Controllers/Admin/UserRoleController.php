@@ -10,11 +10,12 @@ class UserRoleController extends Controller
 {
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'role_id' => ['required', 'exists:roles,id'],
+        $validated = $request->validate([
+            'role_ids' => ['array'],
+            'role_ids.*' => ['exists:roles,id'],
         ]);
 
-        $user->roles()->sync([$request->role_id]);
+        $user->roles()->sync($validated['role_ids']);
 
         return back()->with('success', 'Role berhasil diperbarui.');
     }

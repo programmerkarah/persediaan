@@ -41,3 +41,16 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type Role = {
+  id: number;
+  name: string;
+};
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  roles: Role[];
+};
+
