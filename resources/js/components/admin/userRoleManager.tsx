@@ -1,10 +1,9 @@
 // resources/js/pages/userMgmt/userVerification.tsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { type BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 interface User {
     id: number;
@@ -47,8 +46,8 @@ export default function UserVerification() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Verifikasi Role" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min p-4 bg-white dark:bg-neutral-900">
-                    <h2 className="text-xl font-semibold mb-4">Verifikasi Permintaan Role</h2>
+                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border bg-white p-4 md:min-h-min dark:bg-neutral-900">
+                    <h2 className="mb-4 text-xl font-semibold">Verifikasi Permintaan Role</h2>
                     {users.length > 0 ? (
                         <table className="w-full table-auto border">
                             <thead className="bg-gray-100 dark:bg-neutral-800">
@@ -84,9 +83,7 @@ export default function UserVerification() {
                             </tbody>
                         </table>
                     ) : (
-                        <div className="text-center py-10 text-gray-500 dark:text-gray-400">
-                            Tidak ada permintaan role saat ini.
-                        </div>
+                        <div className="py-10 text-center text-gray-500 dark:text-gray-400">Tidak ada permintaan role saat ini.</div>
                     )}
                 </div>
             </div>

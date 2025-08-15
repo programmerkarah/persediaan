@@ -1,8 +1,9 @@
-import UserRoleManager from '@/components/admin/UserRoleManager';
+import UserRoleManager from '@/components/admin/userRoleManager';
 import { Input } from '@/components/ui/input';
 import { Select, SelectItem } from '@/components/ui/select';
 import AuthLayout from '@/layouts/auth-layout';
 import { router } from '@inertiajs/react';
+import { SelectContent } from '@radix-ui/react-select';
 import { useEffect, useState } from 'react';
 
 export default function UserList({ users, roles, filters }) {
@@ -21,12 +22,14 @@ export default function UserList({ users, roles, filters }) {
             <div className="mb-6 flex flex-col gap-4 md:flex-row">
                 <Input placeholder="Cari nama atau email..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 <Select value={role} onValueChange={setRole}>
-                    <SelectItem value="">Semua Role</SelectItem>
-                    {roles.map((r) => (
-                        <SelectItem key={r.id} value={r.name}>
-                            {r.name}
-                        </SelectItem>
-                    ))}
+                    <SelectContent>
+                        <SelectItem value="__all__">Semua Role</SelectItem>
+                        {roles.map((r) => (
+                            <SelectItem key={r.id} value={r.name}>
+                                {r.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
                 </Select>
             </div>
 
